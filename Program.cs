@@ -50,7 +50,7 @@ namespace TaskTracker
                     switch (args[1])
                     {
                         case "add":
-                            if (length < 3)
+                            if (length != 3)
                             {
                                 Console.WriteLine("Error: Add takes one argument");
                                 return;
@@ -59,7 +59,7 @@ namespace TaskTracker
                             AddTask(task);
                             break;
                         case "delete":
-                            if (length < 3)
+                            if (length != 3)
                             {
                                 Console.WriteLine("Error: Delete takes one argument");
                                 return;
@@ -81,7 +81,7 @@ namespace TaskTracker
                             }
                             break;
                         case "update":
-                            if (length < 4)
+                            if (length != 4)
                             {
                                 Console.WriteLine("Error: Update takes two arguments");
                                 return;
@@ -129,7 +129,7 @@ namespace TaskTracker
                         case "mark-done":
                             if (length != 3)
                             {
-                                Console.WriteLine("mark-in-progress takes one argument");
+                                Console.WriteLine("mark-done takes one argument");
                                 return;
                             }
                             if (int.TryParse(args[2], out int markDoneId))
@@ -146,6 +146,33 @@ namespace TaskTracker
                             else
                             {
                                 Console.WriteLine("Error: Enter an Integer Id");
+                            }
+                            break;
+
+                        case "list":
+
+                            if (length == 2)
+                            {
+                                ListTasks(0);
+                            }
+                            else if (length == 3)
+                            {
+                                switch (args[2])
+                                {
+                                    case "done":
+                                        ListTasks(1);
+                                        break;
+                                    case "todo":
+                                        ListTasks(2);
+                                        break;
+                                    case "in-progress":
+                                        ListTasks(3);
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("List takes a maximum of one argument");
                             }
                             break;
 
@@ -255,6 +282,7 @@ Examples:
                 if (tasks[i].Id == id)
                 {
                     tasks[i].Description = newTaskDescription;
+                    tasks[i].UpdatedAt = DateTime.Now;
                     SaveTasks(tasks);
                     return true;
                 }
@@ -272,16 +300,90 @@ Examples:
                     if (inProgress)
                     {
                         tasks[i].TaskStatus = Task.Status.inProgress;
+                        tasks[i].UpdatedAt = DateTime.Now;
                     }
                     else
                     {
                         tasks[i].TaskStatus = Task.Status.done;
+                        tasks[i].UpdatedAt = DateTime.Now;
                     }
                     SaveTasks(tasks);
                     return true;
                 }
             }
             return false;
+        }
+
+        static void ListTasks(int selector)
+        {
+            // 0 = all
+            // 1 = done 
+            // 2 = todo
+            // 3 = inProgress 
+            List<Task> tasks = LoadTasks();
+            switch (selector)
+            {
+                case 0:
+                    foreach (Task task in tasks)
+                    {
+                        Console.WriteLine($"ID: {task.Id}");
+                        Console.WriteLine($"Description: {task.Description}");
+                        Console.WriteLine($"Status: {task.TaskStatus}");
+                        Console.WriteLine($"Created At: {task.CreatedAt.ToShortTimeString()}");
+                        Console.WriteLine($"Updated At: {task.UpdatedAt.ToShortTimeString()}");
+                        Console.WriteLine();
+                    }
+                    break;
+                case 1:
+                    foreach (Task task in tasks)
+                    {
+                        if (task.TaskStatus == Task.Status.done)
+                        {
+                            Console.WriteLine($"ID: {task.Id}");
+                            Console.WriteLine($"Description: {task.Description}");
+                            Console.WriteLine($"Status: {task.TaskStatus}");
+                            Console.WriteLine($"Created At: {task.CreatedAt.ToShortTimeString()}");
+                            Console.WriteLine($"Updated At: {task.UpdatedAt.ToShortTimeString()}");
+                            Console.WriteLine();
+                        }
+                    }
+                    break;
+
+                case 2:
+                    foreach (Task task in tasks)
+                    {
+                        if (task.TaskStatus == Task.Status.todo)
+                        {
+                            Console.WriteLine($"ID: {task.Id}");
+                            Console.WriteLine($"Description: {task.Description}");
+                            Console.WriteLine($"Status: {task.TaskStatus}");
+                            Console.WriteLine($"Created At: {task.CreatedAt.ToShortTimeString()}");
+                            Console.WriteLine($"Updated At: {task.UpdatedAt.ToShortTimeString()}");
+                            Console.WriteLine();
+                        }
+                    }
+                    break;
+
+
+                case 3:
+                    foreach (Task task in tasks)
+                    {
+                        if (task.TaskStatus == Task.Status.inProgress)
+                        {
+                            Console.WriteLine($"ID: {task.Id}");
+                            Console.WriteLine($"Description: {task.Description}");
+                            Console.WriteLine($"Status: {task.TaskStatus}");
+                            Console.WriteLine($"Created At: {task.CreatedAt.ToShortTimeString()}");
+                            Console.WriteLine($"Updated At: {task.UpdatedAt.ToShortTimeString()}");
+                            Console.WriteLine();
+                        }
+                    }
+                    break;
+
+                default:
+                    Console.WriteLine("invalid selector");
+                    break;
+            }
         }
     }
 }
