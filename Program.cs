@@ -64,11 +64,11 @@ namespace TaskTracker
                                 Console.WriteLine("Error: Delete takes one argument");
                                 return;
                             }
-                            if (int.TryParse(args[2], out int id))
+                            if (int.TryParse(args[2], out int deleteId))
                             {
-                                if (DeleteTask(id))
+                                if (DeleteTask(deleteId))
                                 {
-                                    Console.WriteLine($"Task {id} deleted successfully");
+                                    Console.WriteLine($"Task {deleteId} deleted successfully");
                                 }
                                 else
                                 {
@@ -80,6 +80,30 @@ namespace TaskTracker
                                 Console.WriteLine("Error: Enter an Integer Id");
                             }
                             break;
+                        case "update":
+                            if (length < 4)
+                            {
+                                Console.WriteLine("Error: Update takes two arguments");
+                                return;
+                            }
+                            string newTaskDescription = args[3];
+                            if (int.TryParse(args[2], out int updateId))
+                            {
+                                if (UpdateTask(updateId, newTaskDescription))
+                                {
+                                    Console.WriteLine("Task updated successfully");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error: Task Id not found");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Error: Enter an Integer Id");
+                            }
+                            break;
+
                     }
                 }
             }
@@ -171,6 +195,21 @@ Examples:
                 if (tasks[i].Id == id)
                 {
                     tasks.Remove(tasks[i]);
+                    SaveTasks(tasks);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        static bool UpdateTask(int id, string newTaskDescription)
+        {
+            List<Task> tasks = LoadTasks();
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                if (tasks[i].Id == id)
+                {
+                    tasks[i].Description = newTaskDescription;
                     SaveTasks(tasks);
                     return true;
                 }
