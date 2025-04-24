@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;                        // For JsonConvert
+﻿using System.Reflection.Metadata.Ecma335;
+using Newtonsoft.Json;                        // For JsonConvert
 
 namespace TaskTracker
 {
@@ -56,6 +57,28 @@ namespace TaskTracker
                             }
                             string task = args[2];
                             AddTask(task);
+                            break;
+                        case "delete":
+                            if (length < 3)
+                            {
+                                Console.WriteLine("Error: Delete takes one argument");
+                                return;
+                            }
+                            if (int.TryParse(args[2], out int id))
+                            {
+                                if (DeleteTask(id))
+                                {
+                                    Console.WriteLine($"Task {id} deleted successfully");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error: Task Id not found");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Error: Enter an Integer Id");
+                            }
                             break;
                     }
                 }
@@ -121,7 +144,7 @@ Examples:
             }
             return tasks;
         }
-        static void SaveTask(List<Task> tasks)
+        static void SaveTasks(List<Task> tasks)
         {
             string updatedJson = JsonConvert.SerializeObject(tasks, Formatting.Indented);
             File.WriteAllText("data.json", updatedJson);
@@ -138,7 +161,21 @@ Examples:
                 TaskStatus = Task.Status.todo
             };
             tasks.Add(newTask);
-            SaveTask(tasks);
+            SaveTasks(tasks);
+        }
+        static bool DeleteTask(int id)
+        {
+            List<Task> tasks = LoadTasks();
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                if (tasks[i].Id == id)
+                {
+                    tasks.Remove(tasks[i]);
+                    SaveTasks(tasks);
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
