@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "wyZs4qzWkNc=",
+  "dgSpecHash": "W+TpU1UUVbY=",
   "success": true,
   "projectFilePath": "/home/mesh/Documents/personalPrj/roadmap.sh/csharp/taskTracker/taskTracker.csproj",
   "expectedPackageFiles": [
+    "/home/mesh/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
     "/home/mesh/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.3/microsoft.aspnetcore.app.ref.9.0.3.nupkg.sha512"
   ],
   "logs": []

@@ -1,0 +1,16 @@
+[
+  {
+    "Id": 1,
+    "Description": "do the dishes",
+    "TaskStatus": 0,
+    "CreatedAt": "2025-04-24T11:21:07.3001508+03:00",
+    "UpdatedAt": "2025-04-24T11:21:07.3210954+03:00"
+  },
+  {
+    "Id": 2,
+    "Description": "clean the house",
+    "TaskStatus": 0,
+    "CreatedAt": "2025-04-24T11:21:38.1606649+03:00",
+    "UpdatedAt": "2025-04-24T11:21:38.1606659+03:00"
+  }
+]
