@@ -103,6 +103,51 @@ namespace TaskTracker
                                 Console.WriteLine("Error: Enter an Integer Id");
                             }
                             break;
+                        case "mark-in-progress":
+                            if (length != 3)
+                            {
+                                Console.WriteLine("mark-in-progress takes one argument");
+                                return;
+                            }
+                            if (int.TryParse(args[2], out int markInProgressId))
+                            {
+                                if (MarkProgress(markInProgressId, inProgress: true))
+                                {
+                                    Console.WriteLine($"Task {markInProgressId} marked as in progress");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error: Task Id not found");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Error: Enter an Integer Id");
+                            }
+                            break;
+
+                        case "mark-done":
+                            if (length != 3)
+                            {
+                                Console.WriteLine("mark-in-progress takes one argument");
+                                return;
+                            }
+                            if (int.TryParse(args[2], out int markDoneId))
+                            {
+                                if (MarkProgress(markDoneId, inProgress: false))
+                                {
+                                    Console.WriteLine($"Task {markDoneId} marked as done");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error: Task Id not found");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Error: Enter an Integer Id");
+                            }
+                            break;
 
                     }
                 }
@@ -210,6 +255,28 @@ Examples:
                 if (tasks[i].Id == id)
                 {
                     tasks[i].Description = newTaskDescription;
+                    SaveTasks(tasks);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        static bool MarkProgress(int id, bool inProgress = true)
+        {
+            List<Task> tasks = LoadTasks();
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                if (tasks[i].Id == id)
+                {
+                    if (inProgress)
+                    {
+                        tasks[i].TaskStatus = Task.Status.inProgress;
+                    }
+                    else
+                    {
+                        tasks[i].TaskStatus = Task.Status.done;
+                    }
                     SaveTasks(tasks);
                     return true;
                 }
